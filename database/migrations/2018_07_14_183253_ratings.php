@@ -16,6 +16,8 @@ class Ratings extends Migration
         Schema::create('ratings', function (Blueprint $table) {
             $table->increments('id');
 
+            $table->text('review');
+
             $table->integer('rateable_id');
             $table->string('rateable_type');
 

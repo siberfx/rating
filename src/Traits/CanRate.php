@@ -45,7 +45,7 @@ trait CanRate
      * @param  float  $rating
      * @return bool
      */
-    public function rate($model, float $rating): bool
+    public function rate($model, float $rating, string $review): bool
     {
         if (! $model instanceof Rateable && ! $model instanceof Rating) {
             return false;
@@ -60,6 +60,7 @@ trait CanRate
             'rateable_type' => $model->getMorphClass(),
             'rateable_id' => $model->getKey(),
             'rating' => $rating,
+            'review' => $review
         ]);
 
         return true;
@@ -72,7 +73,7 @@ trait CanRate
      * @param  float  $newRating
      * @return bool
      */
-    public function updateRatingFor($model, $newRating): bool
+    public function updateRatingFor($model, $newRating, $review): bool
     {
         if (! $model instanceof Rateable && ! $model instanceof Rating) {
             return false;
@@ -84,7 +85,7 @@ trait CanRate
 
         $this->unrate($model);
 
-        return $this->rate($model, $newRating);
+        return $this->rate($model, $newRating, $review);
     }
 
     /**

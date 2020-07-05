@@ -27,7 +27,7 @@ interface Rater
      * @param  float  $rating
      * @return bool
      */
-    public function rate($model, float $rating): bool;
+    public function rate($model, float $rating, string $review): bool;
 
     /**
      * Update the rating for a model.
@@ -36,7 +36,7 @@ interface Rater
      * @param  float  $newRating
      * @return bool
      */
-    public function updateRatingFor($model, $newRating): bool;
+    public function updateRatingFor($model, $newRating, string $review): bool;
 
     /**
      * Unrate a certain model.
