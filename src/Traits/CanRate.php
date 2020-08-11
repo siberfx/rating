@@ -18,7 +18,7 @@ trait CanRate
         $modelClass = $model ? (new $model)->getMorphClass() : $this->getMorphClass();
 
         return $this->morphToMany($modelClass, 'rater', 'ratings', 'rater_id', 'rateable_id')
-                    ->withPivot('rateable_type', 'rating')
+                    ->withPivot('rateable_type', 'rating', 'review')
                     ->wherePivot('rateable_type', $modelClass)
                     ->wherePivot('rater_type', $this->getMorphClass());
     }
