@@ -2,8 +2,9 @@
 
 namespace Rennokki\Rating\Traits;
 
-use Rennokki\Rating\Contracts\Rateable;
+use Carbon\Carbon;
 use Rennokki\Rating\Contracts\Rating;
+use Rennokki\Rating\Contracts\Rateable;
 
 trait CanRate
 {
@@ -18,7 +19,7 @@ trait CanRate
         $modelClass = $model ? (new $model)->getMorphClass() : $this->getMorphClass();
 
         return $this->morphToMany($modelClass, 'rater', 'ratings', 'rater_id', 'rateable_id')
-                    ->withPivot('rateable_type', 'rating', 'review')
+                    ->withPivot('rateable_type', 'rating', 'review', 'created_at')
                     ->wherePivot('rateable_type', $modelClass)
                     ->wherePivot('rater_type', $this->getMorphClass());
     }
@@ -60,7 +61,9 @@ trait CanRate
             'rateable_type' => $model->getMorphClass(),
             'rateable_id' => $model->getKey(),
             'rating' => $rating,
-            'review' => $review
+            'review' => $review,
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now()
         ]);
 
         return true;
