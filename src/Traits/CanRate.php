@@ -52,9 +52,9 @@ trait CanRate
             return false;
         }
 
-        if ($this->hasRated($model)) {
-            return false;
-        }
+        // if ($this->hasRated($model)) {
+        //     return false;
+        // }
 
         $this->ratings()->attach($this->getKey(), [
             'rater_id' => $this->getKey(),
