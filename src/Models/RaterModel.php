@@ -21,6 +21,7 @@ class RaterModel extends Model
      */
     protected $casts = [
         'rating' => 'float',
+        'meta' => 'json'
     ];
 
     /**

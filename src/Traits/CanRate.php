@@ -19,9 +19,9 @@ trait CanRate
         $modelClass = $model ? (new $model)->getMorphClass() : $this->getMorphClass();
 
         return $this->morphToMany($modelClass, 'rater', 'ratings', 'rater_id', 'rateable_id')
-                    ->withPivot('rateable_type', 'rating', 'review', 'created_at')
-                    ->wherePivot('rateable_type', $modelClass)
-                    ->wherePivot('rater_type', $this->getMorphClass());
+            ->withPivot('rateable_type', 'rating', 'review', 'created_at')
+            ->wherePivot('rateable_type', $modelClass)
+            ->wherePivot('rater_type', $this->getMorphClass());
     }
 
     /**
@@ -32,11 +32,11 @@ trait CanRate
      */
     public function hasRated($model): bool
     {
-        if (! $model instanceof Rateable && ! $model instanceof Rating) {
+        if (!$model instanceof Rateable && !$model instanceof Rating) {
             return false;
         }
 
-        return ! is_null($this->ratings($model->getMorphClass())->find($model->getKey()));
+        return !is_null($this->ratings($model->getMorphClass())->find($model->getKey()));
     }
 
     /**
@@ -46,9 +46,9 @@ trait CanRate
      * @param  float  $rating
      * @return bool
      */
-    public function rate($model, float $rating, string $review): bool
+    public function rate($model, float $rating, string $review, $meta = null): bool
     {
-        if (! $model instanceof Rateable && ! $model instanceof Rating) {
+        if (!$model instanceof Rateable && !$model instanceof Rating) {
             return false;
         }
 
@@ -63,7 +63,8 @@ trait CanRate
             'rating' => $rating,
             'review' => $review,
             'created_at' => Carbon::now(),
-            'updated_at' => Carbon::now()
+            'updated_at' => Carbon::now(),
+            'meta' => $meta
         ]);
 
         return true;
@@ -76,19 +77,19 @@ trait CanRate
      * @param  float  $newRating
      * @return bool
      */
-    public function updateRatingFor($model, $newRating, $review): bool
+    public function updateRatingFor($model, $newRating, $review, $meta = null): bool
     {
-        if (! $model instanceof Rateable && ! $model instanceof Rating) {
+        if (!$model instanceof Rateable && !$model instanceof Rating) {
             return false;
         }
 
-        if (! $this->hasRated($model)) {
-            return $this->rate($model, $newRating);
+        if (!$this->hasRated($model)) {
+            return $this->rate($model, $newRating, $review, $meta);
         }
 
         $this->unrate($model);
 
-        return $this->rate($model, $newRating, $review);
+        return $this->rate($model, $newRating, $review, $meta);
     }
 
     /**
@@ -99,11 +100,11 @@ trait CanRate
      */
     public function unrate($model): bool
     {
-        if (! $model instanceof Rateable && ! $model instanceof Rating) {
+        if (!$model instanceof Rateable && !$model instanceof Rating) {
             return false;
         }
 
-        if (! $this->hasRated($model)) {
+        if (!$this->hasRated($model)) {
             return false;
         }
 
