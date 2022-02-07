@@ -14,7 +14,7 @@ class AlterRatingsAddMeta extends Migration
     public function up()
     {
         Schema::table('ratings', function (Blueprint $table) {
-            $table->json('meta');
+            $table->json('meta')->nullable();
         });
     }
 
