@@ -4,6 +4,7 @@ namespace Rennokki\Rating\Traits;
 
 use Carbon\Carbon;
 use Rennokki\Rating\Contracts\Rating;
+use Rennokki\Rating\Models\RaterModel;
 use Rennokki\Rating\Contracts\Rateable;
 
 trait CanRate
@@ -56,8 +57,9 @@ trait CanRate
         //     return false;
         // }
 
-        $this->ratings()->attach($this->getKey(), [
+        RaterModel::create([
             'rater_id' => $this->getKey(),
+            'rater_type' => $this->getMorphClass(),
             'rateable_type' => $model->getMorphClass(),
             'rateable_id' => $model->getKey(),
             'rating' => $rating,
@@ -66,6 +68,17 @@ trait CanRate
             'updated_at' => Carbon::now(),
             'meta' => $meta
         ]);
+
+        // $this->ratings()->attach($this->getKey(), [
+        //     'rater_id' => $this->getKey(),
+        //     'rateable_type' => $model->getMorphClass(),
+        //     'rateable_id' => $model->getKey(),
+        //     'rating' => $rating,
+        //     'review' => $review,
+        //     'created_at' => Carbon::now(),
+        //     'updated_at' => Carbon::now(),
+        //     'meta' => $meta
+        // ]);
 
         return true;
     }
